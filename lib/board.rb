@@ -1,4 +1,5 @@
 class Board
+  attr_reader :board
   def initialize(board = nil)
     @board = board || [1,2,3,4,5,6,7,8,9]
   end
@@ -11,9 +12,14 @@ class Board
     "%s|%s|%s\n%s|%s|%s\n%s|%s|%s"%[*board]
   end
 
+  def update(box_number)
+    index = box_number.to_i - 1
+    @board[index] = "X"
+  end
+
   def has_winner?
     #TODO dummy win checker
-    @board[7] == "O"
+    @board[7] == "X"
   end
 
   def check
