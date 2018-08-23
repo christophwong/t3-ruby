@@ -1,7 +1,8 @@
 class Board
   attr_reader :board
-  def initialize(board = nil)
+  def initialize(board = nil, player = nil)
     @board = board || [1,2,3,4,5,6,7,8,9]
+    @player = player || "X"
   end
 
   def display_board(ui)
@@ -12,9 +13,18 @@ class Board
     "%s|%s|%s\n%s|%s|%s\n%s|%s|%s"%[*board]
   end
 
+  def is_current_player_X?
+    "X" == @player
+  end
+
+  def update_player
+    @player = is_current_player_X? ? "O" : "X"
+  end
+
   def update(box_number)
     index = box_number.to_i - 1
-    @board[index] = "X"
+    @board[index] = @player
+    update_player
   end
 
   def has_winner?

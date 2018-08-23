@@ -22,4 +22,11 @@ class TestBoard < Minitest::Test
     @board.update('1')
     assert_equal "X", @board.board[0]
   end
+
+  def test_board_updates_alternate_players
+    @board.update('1')
+    @board.update('2')
+    assert_equal "X", @board.board[0]
+    assert_equal "O", @board.board[1]
+  end
 end
