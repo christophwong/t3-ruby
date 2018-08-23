@@ -13,6 +13,13 @@ class TestUI < Minitest::Test
   	testString = "Hello World."
     @input.puts testString
     @input.rewind
-    assert_equal "Hello World.", @ui.receive(@input)
+    assert_equal testString, @ui.receive(@input)
+  end
+
+  def test_ui_outputs_message_to_user
+    testString = "Hello World."
+
+    @ui.give(testString, @output)
+    assert_match testString, @output.string
   end
 end
