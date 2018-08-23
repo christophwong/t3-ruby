@@ -1,12 +1,12 @@
 require 'minitest/autorun'
-require_relative '../lib/start.rb'
+require_relative '../lib/game_runner.rb'
 
-class TestStart < Minitest::Test
+class TestGameRunner < Minitest::Test
   def test_start_script_calls_start_game
     @game = Minitest::Mock.new
     @game.expect(:start, nil)
 
-    Start.run(@game)
+    GameRunner.run(@game)
     @game.verify
   end
 end
