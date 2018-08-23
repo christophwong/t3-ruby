@@ -1,4 +1,4 @@
-# t3-ruby
+# t3-ruby [![CircleCI](https://circleci.com/gh/christophwong/t3-ruby.svg?style=svg)](https://circleci.com/gh/christophwong/t3-ruby)
 ruby tic tac toe
 
 ## Run tests
