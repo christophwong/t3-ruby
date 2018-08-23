@@ -12,10 +12,19 @@ class Board
     "%s|%s|%s\n%s|%s|%s\n%s|%s|%s"%[*board]
   end
 
+  def box_empty?(index)
+    @board[index].class == Integer
+  end
 
   def update(box_number, player)
     index = box_number.to_i - 1
-    @board[index] = player
+
+    if box_empty?(index)
+      @board[index] = player
+      return true
+    else
+      return false
+    end
   end
 
   def has_winner?

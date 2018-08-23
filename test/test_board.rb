@@ -8,7 +8,7 @@ class TestBoard < Minitest::Test
   end
 
   def test_display_board_outputs_board
-    @ui.expect(:give, true, [/(\d[\|\n]?){9}/])
+    @ui.expect(:give, nil, [/(\d[\|\n]?){9}/])
     @board.display_board(@ui)
 
     @ui.verify
@@ -21,5 +21,11 @@ class TestBoard < Minitest::Test
   def test_board_updates
     @board.update('1', "S")
     assert_equal "S", @board.board[0]
+  end
+
+  def test_board_cannot_update_the_same_grid_twice
+    @board.update('1', "A")
+    @board.update('1', "B")
+    assert_equal @board.board[0], "A"
   end
 end

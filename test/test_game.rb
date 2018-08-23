@@ -32,16 +32,17 @@ class TestGame < Minitest::Test
     @board.verify
   end
 
-  def test_game_next_move_updates_player
-    dummy_input = '1'
-
+  def test_game_next_move_only_updates_player_when_update_was_successful
     @board.expect(:display_board, nil, [@ui])
     @board.expect(:display_board, nil, [@ui])
-    @ui.expect(:receive, dummy_input)
-    @ui.expect(:receive, dummy_input)
-    @board.expect(:update, nil, [dummy_input, "X"])
-    @board.expect(:update, nil, [dummy_input, "O"])
-
+    @board.expect(:display_board, nil, [@ui])
+    @ui.expect(:receive, '1')
+    @ui.expect(:receive, '1')
+    @ui.expect(:receive, '2')
+    @board.expect(:update, true, ['1', "X"])
+    @board.expect(:update, false, ['1', "O"])
+    @board.expect(:update, true, ['2', "O"])
+    @game.next_move
     @game.next_move
     @game.next_move
   end
