@@ -13,4 +13,13 @@ class TestBoard < Minitest::Test
 
     @ui.verify
   end
+
+  # def test_board_checks_returns_play
+  #   assert_equal @board.check, :PLAY
+  # end
+
+  # def test_board_checks_returns_winner_when_won
+  #   winning_board = Board.new([1,2,3,4,5,6,"X","X","X"])
+  #   assert_equal winning_board.check, :X
+  # end
 end

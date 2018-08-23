@@ -9,24 +9,31 @@ class TestGame < Minitest::Test
 
   end
 
-  def test_start_game_welcomes_player_and_display_board
-    ask_for_move_pattern = /^Please{1}.+1-9{1}.+mark{1}.+move{1}.+\.$/
-
+  def test_welcome_outputs_to_player
     @ui.expect(:give, nil, [/Welcome/])
+    @game.welcome
+    @ui.verify
+  end
+
+  def test_checks_if_game_is_over
+    @board.expect(:has_winner?, true)
+    assert @game.game_over?
+  end
+
+  def test_next_move_displays_board_and_receives_move_from_input
+    dummy_input = '1'
+
     @board.expect(:display_board, nil, [@ui])
-    @ui.expect(:give, nil, [ask_for_move_pattern])
-    @ui.expect(:receive, nil)
-    @game.start
+    @ui.expect(:receive, dummy_input)
+    @board.expect(:update, nil, [dummy_input])
+    @game.next_move
     @ui.verify
     @board.verify
   end
 
-  def test_game_sends_user_input_to_board
-    move = "1"
-    @ui.expect(:receive, move)
-    @board.expect(:mark_move, nil, [move])
-    @game.get_move(@ui)
+  def test_game_ends_says_bye
+    @ui.expect(:give, nil, [/Bye/])
+    @game.end
     @ui.verify
-    @board.verify
   end
 end
