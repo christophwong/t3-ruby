@@ -1,7 +1,8 @@
 class Game
-  def initialize(ui, board)
+  def initialize(ui, board, player = nil)
     @ui = ui
     @board = board
+    @player = player || "X"
   end
 
   def welcome
@@ -15,10 +16,19 @@ class Game
   def next_move
     @board.display_board(@ui)
     user_input = @ui.receive
-    @board.update(user_input)
+    @board.update(user_input, @player)
+    update_player
   end
 
   def end
     @ui.give("Bye")
+  end
+
+  def is_current_player_X?
+    "X" == @player
+  end
+
+  def update_player
+    @player = is_current_player_X? ? "O" : "X"
   end
 end

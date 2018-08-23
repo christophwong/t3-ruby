@@ -3,9 +3,10 @@ require_relative '../lib/game.rb'
 
 class TestGame < Minitest::Test
   def setup
+    @player = "X"
   	@ui = Minitest::Mock.new
     @board = Minitest::Mock.new
-    @game = Game.new(@ui, @board)
+    @game = Game.new(@ui, @board, @player)
 
   end
 
@@ -25,10 +26,24 @@ class TestGame < Minitest::Test
 
     @board.expect(:display_board, nil, [@ui])
     @ui.expect(:receive, dummy_input)
-    @board.expect(:update, nil, [dummy_input])
+    @board.expect(:update, nil, [dummy_input, @player])
     @game.next_move
     @ui.verify
     @board.verify
+  end
+
+  def test_game_next_move_updates_player
+    dummy_input = '1'
+
+    @board.expect(:display_board, nil, [@ui])
+    @board.expect(:display_board, nil, [@ui])
+    @ui.expect(:receive, dummy_input)
+    @ui.expect(:receive, dummy_input)
+    @board.expect(:update, nil, [dummy_input, "X"])
+    @board.expect(:update, nil, [dummy_input, "O"])
+
+    @game.next_move
+    @game.next_move
   end
 
   def test_game_ends_says_bye
