@@ -10,11 +10,11 @@ class TestGame < Minitest::Test
   end
 
   def test_start_game_welcomes_player_and_display_board
-    askForMovePattern = /^Please{1}.+1-9{1}.+mark{1}.+move{1}.+\.$/
+    ask_for_move_pattern = /^Please{1}.+1-9{1}.+mark{1}.+move{1}.+\.$/
 
     @ui.expect(:give, nil, [/Welcome/])
-    @board.expect(:displayBoard, nil, [@ui])
-    @ui.expect(:give, nil, [askForMovePattern])
+    @board.expect(:display_board, nil, [@ui])
+    @ui.expect(:give, nil, [ask_for_move_pattern])
     @ui.expect(:receive, nil)
     @game.start
     @ui.verify
@@ -24,8 +24,8 @@ class TestGame < Minitest::Test
   def test_game_sends_user_input_to_board
     move = "1"
     @ui.expect(:receive, move)
-    @board.expect(:markMove, nil, [move])
-    @game.getMove(@ui)
+    @board.expect(:mark_move, nil, [move])
+    @game.get_move(@ui)
     @ui.verify
     @board.verify
   end

@@ -10,16 +10,16 @@ class TestUI < Minitest::Test
   end
 
   def test_ui_returns_user_input
-  	testString = "Hello World."
-    @input.puts testString
+  	test_string = "Hello World."
+    @input.puts test_string
     @input.rewind
-    assert_equal testString, @ui.receive(@input)
+    assert_equal test_string, @ui.receive(@input)
   end
 
   def test_ui_outputs_message_to_user
-    testString = "Hello World."
+    test_string = "Hello World."
 
-    @ui.give(testString, @output)
-    assert_match testString, @output.string
+    @ui.give(test_string, @output)
+    assert_match test_string, @output.string
   end
 end

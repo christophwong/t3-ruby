@@ -9,7 +9,7 @@ class TestBoard < Minitest::Test
 
   def test_display_board_outputs_board
     @ui.expect(:give, true, [/(\d[\|\n]?){9}/])
-    @board.displayBoard(@ui)
+    @board.display_board(@ui)
 
     @ui.verify
   end

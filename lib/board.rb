@@ -3,11 +3,11 @@ class Board
     @board = [1,2,3,4,5,6,7,8,9]
   end
 
-  def displayBoard(ui)
-    ui.give(formatBoard(@board))
+  def display_board(ui)
+    ui.give(format_board(@board))
   end
 
-  def formatBoard(board)
+  def format_board(board)
     "%s|%s|%s\n%s|%s|%s\n%s|%s|%s"%[*board]
   end
 end
