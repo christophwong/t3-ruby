@@ -5,7 +5,7 @@ class TestUI < Minitest::Test
 
   def setup
   	@ui = UI.new
-  	@input = StringIO.new("AA")
+  	@input = StringIO.new
   	@output = StringIO.new
   end
 
