@@ -33,12 +33,12 @@ class Board
   end
 
   def check
-    check_rows || check_columns
+    check_rows || check_columns || check_diagonals
   end
 
   def three_by_three_array_checker(array_of_3)
-    if array_of_3.length != 3 || array_of_3[0].length != 3
-      raise ArgumentError("Argument must be 3 X 3 array")
+    if array_of_3[0].length != 3
+      raise ArgumentError("Argument must be array of arrays of size 3")
     end
     array_of_3.each do |cell|
       ["X", "O"].each do |mark|
@@ -47,13 +47,36 @@ class Board
         end
       end
     end
-   return false
+    return false
+  end
+
+  def check_diagonals
+    diagonals = get_diagonals(@board)
+    three_by_three_array_checker(diagonals)
+  end
+
+  def get_diagonals(board)
+    rows = get_rows(board)
+    top_left_to_bottom_right = []
+    top_right_to_bottom_left = []
+
+    rows.each_with_index do |row, index|
+      top_left_to_bottom_right << row[index]
+      top_right_to_bottom_left << row[2 - index]
+    end
+
+    return [top_left_to_bottom_right, top_right_to_bottom_left]
   end
 
   def check_columns
     columns = get_columns(@board)
     three_by_three_array_checker(columns)
   end
+
+  def get_columns(board)
+    get_rows(board).transpose
+  end
+
 
   def check_rows
     rows = get_rows(@board)
@@ -67,10 +90,6 @@ class Board
       rows << copyboard.shift(3)
     end
     rows
-  end
-
-  def get_columns(board)
-    get_rows(board).transpose
   end
 
   def length
