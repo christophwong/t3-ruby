@@ -22,11 +22,9 @@ class TestGame < Minitest::Test
   end
 
   def test_next_move_displays_board_and_receives_move_from_input
-    dummy_input = '1'
-
     @board.expect(:display_board, nil, [@ui])
-    @ui.expect(:receive, dummy_input)
-    @board.expect(:update, nil, [dummy_input, @player])
+    @ui.expect(:receive, '1')
+    @board.expect(:update, nil, [0, @player])
     @game.next_move
     @ui.verify
     @board.verify
@@ -39,9 +37,9 @@ class TestGame < Minitest::Test
     @ui.expect(:receive, '1')
     @ui.expect(:receive, '1')
     @ui.expect(:receive, '2')
-    @board.expect(:update, true, ['1', "X"])
-    @board.expect(:update, false, ['1', "O"])
-    @board.expect(:update, true, ['2', "O"])
+    @board.expect(:update, true, [0, "X"])
+    @board.expect(:update, false, [0, "O"])
+    @board.expect(:update, true, [1, "O"])
     @game.next_move
     @game.next_move
     @game.next_move

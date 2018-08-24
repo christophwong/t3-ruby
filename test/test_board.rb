@@ -15,14 +15,14 @@ class TestBoard < Minitest::Test
   end
 
   def test_board_updates
-    @board.update('1', "S")
-    assert_equal "S", @board.board[0]
+    @board.update(0, "X")
+    assert_equal "X", @board.spaces[0]
   end
 
   def test_board_cannot_update_the_same_grid_twice
-    @board.update('1', "A")
-    @board.update('1', "B")
-    assert_equal @board.board[0], "A"
+    @board.update(0, "X")
+    @board.update(0, "O")
+    assert_equal @board.spaces[0], "X"
   end
 
   def test_board_checks_for_row_wins
@@ -45,5 +45,11 @@ class TestBoard < Minitest::Test
     board = Board.new(winning_board)
     assert board.check_for_winner
     assert_equal 9, board.length
+  end
+
+  def test_board_gets_empty_indices
+    @board.update(4, "O")
+    without_four = [0, 1, 2, 3, 5, 6, 7, 8]
+    assert_equal without_four, @board.empty_indices
   end
 end

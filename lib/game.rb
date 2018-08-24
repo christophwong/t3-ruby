@@ -16,7 +16,8 @@ class Game
   def next_move
     @board.display_board(@ui)
     user_input = @ui.receive
-    update_player if @board.update(user_input, @player)
+    index = user_input.to_i - 1
+    update_player if @board.update(index, @player)
   end
 
   def end

@@ -1,28 +1,33 @@
 class Board
-  attr_reader :board
+  attr_reader :spaces
   attr_accessor :winner
-  def initialize(board = nil)
-    @board = board || [1,2,3,4,5,6,7,8,9]
+  def initialize(spaces = nil)
+    @spaces = spaces || [1,2,3,4,5,6,7,8,9]
     @winner = false
   end
 
   def display_board(ui)
-    ui.give(format_board(@board))
+    ui.give(format_board(@spaces))
   end
 
-  def format_board(board)
-    "%s|%s|%s\n%s|%s|%s\n%s|%s|%s"%[*board]
+  def format_board(spaces)
+    "%s|%s|%s\n%s|%s|%s\n%s|%s|%s"%[*spaces]
+  end
+
+  def empty_indices
+    @spaces.reject{ |cell|
+      cell == "X" or cell == "O"
+    }.map{|i| i.to_i - 1}
   end
 
   def box_empty?(index)
-    @board[index].class == Integer
+    empty_indices.include?(index)
   end
 
-  def update(box_number, player)
-    index = box_number.to_i - 1
-
+  def update(index, player)
     if box_empty?(index)
-      @board[index] = player
+      @spaces[index] = player
+      check_for_winner
       return true
     else
       return false
@@ -49,12 +54,12 @@ class Board
   end
 
   def check_diagonals
-    diagonals = get_diagonals(@board)
+    diagonals = get_diagonals(@spaces)
     three_by_three_array_checker(diagonals)
   end
 
-  def get_diagonals(board)
-    rows = get_rows(board)
+  def get_diagonals(spaces)
+    rows = get_rows(spaces)
     top_left_to_bottom_right = []
     top_right_to_bottom_left = []
 
@@ -67,23 +72,23 @@ class Board
   end
 
   def check_columns
-    columns = get_columns(@board)
+    columns = get_columns(@spaces)
     three_by_three_array_checker(columns)
   end
 
-  def get_columns(board)
-    get_rows(board).transpose
+  def get_columns(spaces)
+    get_rows(spaces).transpose
   end
 
 
   def check_rows
-    rows = get_rows(@board)
+    rows = get_rows(@spaces)
     three_by_three_array_checker(rows)
   end
 
-  def get_rows(board)
+  def get_rows(spaces)
     rows = []
-    copyboard = @board.dup
+    copyboard = @spaces.dup
     3.times do |i|
       rows << copyboard.shift(3)
     end
@@ -91,6 +96,6 @@ class Board
   end
 
   def length
-    @board.length
+    @spaces.length
   end
 end
