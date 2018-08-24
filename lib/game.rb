@@ -21,6 +21,7 @@ class Game
 
   def end
     @ui.give("Game is Over, Winner is #{@board.winner}")
+    @board.display_board(@ui)
     @ui.give("Bye")
   end
 

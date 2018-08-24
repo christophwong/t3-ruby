@@ -50,10 +50,12 @@ class TestGame < Minitest::Test
   def test_game_ends_display_who_won_and_says_bye
     winner_name = "Not a loser"
     winner_pattern = Regexp.new(winner_name)
-    @board.expect(:winner, "Not a loser")
+    @board.expect(:display_board, nil, [@ui])
+    @board.expect(:winner, winner_name)
     @ui.expect(:give, nil, [winner_pattern])
     @ui.expect(:give, nil, [/Bye/])
     @game.end
     @ui.verify
+    @board.verify
   end
 end
