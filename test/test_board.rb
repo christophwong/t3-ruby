@@ -28,7 +28,7 @@ class TestBoard < Minitest::Test
   def test_board_checks_for_row_wins
     winning_board = [1, 2, 3, "O", "O", 6, "X", "X", "X"]
     board = Board.new(winning_board)
-    assert_equal "X", board.check
+    assert board.check_for_winner
     assert_equal 9, board.length
   end
 
@@ -36,14 +36,14 @@ class TestBoard < Minitest::Test
   def test_board_checks_for_column_wins
     winning_board = [1, 2, "X", "O", "O", "X", 7, 8, "X"]
     board = Board.new(winning_board)
-    assert_equal "X", board.check
+    assert board.check_for_winner
     assert_equal 9, board.length
   end
 
   def test_board_checks_for_diagonal_wins
     winning_board = [1, 2, "X", "O", "X", "O", "X", 8, 9]
     board = Board.new(winning_board)
-    assert_equal "X", board.check
+    assert board.check_for_winner
     assert_equal 9, board.length
   end
 end

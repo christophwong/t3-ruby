@@ -10,16 +10,17 @@ class Game
   end
 
   def game_over?
-    @board.has_winner?
+    @board.check_for_winner
   end
 
   def next_move
     @board.display_board(@ui)
     user_input = @ui.receive
-    update_player if  @board.update(user_input, @player)
+    update_player if @board.update(user_input, @player)
   end
 
   def end
+    @ui.give("Game is Over, Winner is #{@board.winner}")
     @ui.give("Bye")
   end
 

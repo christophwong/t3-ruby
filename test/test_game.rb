@@ -17,7 +17,7 @@ class TestGame < Minitest::Test
   end
 
   def test_checks_if_game_is_over
-    @board.expect(:has_winner?, true)
+    @board.expect(:check_for_winner, true)
     assert @game.game_over?
   end
 
@@ -47,7 +47,11 @@ class TestGame < Minitest::Test
     @game.next_move
   end
 
-  def test_game_ends_says_bye
+  def test_game_ends_display_who_won_and_says_bye
+    winner_name = "Not a loser"
+    winner_pattern = Regexp.new(winner_name)
+    @board.expect(:winner, "Not a loser")
+    @ui.expect(:give, nil, [winner_pattern])
     @ui.expect(:give, nil, [/Bye/])
     @game.end
     @ui.verify

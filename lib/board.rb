@@ -1,7 +1,9 @@
 class Board
   attr_reader :board
+  attr_accessor :winner
   def initialize(board = nil)
     @board = board || [1,2,3,4,5,6,7,8,9]
+    @winner = false
   end
 
   def display_board(ui)
@@ -27,13 +29,9 @@ class Board
     end
   end
 
-  def has_winner?
-    #TODO dummy win checker
-    check
-  end
-
-  def check
-    check_rows || check_columns || check_diagonals
+  def check_for_winner
+    @winner = check_rows || check_columns || check_diagonals
+    return !!@winner
   end
 
   def three_by_three_array_checker(array_of_3)
