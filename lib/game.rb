@@ -1,8 +1,8 @@
 class Game
-  def initialize(ui, board, player = nil)
+  def initialize(ui, board)
     @ui = ui
     @board = board
-    @player = player || "X"
+    @player = "X"
   end
 
   def welcome

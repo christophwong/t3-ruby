@@ -6,8 +6,7 @@ class TestGame < Minitest::Test
     @player = "X"
   	@ui = Minitest::Mock.new
     @board = Minitest::Mock.new
-    @game = Game.new(@ui, @board, @player)
-
+    @game = Game.new(@ui, @board)
   end
 
   def test_welcome_outputs_to_player
