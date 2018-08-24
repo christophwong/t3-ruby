@@ -25,11 +25,18 @@ class TestBoard < Minitest::Test
     assert_equal @board.board[0], "A"
   end
 
-  def test_board_checks_for_wins
+  def test_board_checks_for_row_wins
     winning_board = [1, 2, 3, "O", "O", 6, "X", "X", "X"]
     board = Board.new(winning_board)
     assert_equal "X", board.check
     assert_equal 9, board.length
   end
 
+
+  def test_board_checks_for_column_wins
+    winning_board = [1, 2, "X", "O", "O", "X", "7", "8", "X"]
+    board = Board.new(winning_board)
+    assert_equal "X", board.check
+    assert_equal 9, board.length
+  end
 end

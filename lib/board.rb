@@ -33,20 +33,44 @@ class Board
   end
 
   def check
-    check_rows
+    check_rows || check_columns
+  end
+
+  def three_by_three_array_checker(array_of_3)
+    if array_of_3.length != 3 || array_of_3[0].length != 3
+      raise ArgumentError("Argument must be 3 X 3 array")
+    end
+    array_of_3.each do |cell|
+      ["X", "O"].each do |mark|
+        if cell == Array.new(3, mark)
+          return mark
+        end
+      end
+    end
+   return false
+  end
+
+  def check_columns
+    columns = get_columns(@board)
+    three_by_three_array_checker(columns)
   end
 
   def check_rows
+    rows = get_rows(@board)
+    three_by_three_array_checker(rows)
+  end
+
+  def get_rows(board)
     rows = []
-    copyboard = @board.dup #i wanna write test for this
+    copyboard = @board.dup
     3.times do |i|
       rows << copyboard.shift(3)
     end
-    rows.each do |row|
-      return "X" if row == Array.new(3, "X")
-      return "O" if row == Array.new(3, "O")
-    end
-    false
+    rows
+  end
+
+  def get_columns(board)
+    get_rows(board).transpose
   end
 
   def length
