@@ -29,15 +29,27 @@ class Board
 
   def has_winner?
     #TODO dummy win checker
-    @board[7] == "X"
+    check
   end
 
   def check
-    #check if there are winning rows
-    #check if there are winning columns
-    #check if there are winning disgonals
-    #if yes return the winner, if no, check if tied
-    #else continue Play
-    :PLAY
+    check_rows
+  end
+
+  def check_rows
+    rows = []
+    copyboard = @board.dup #i wanna write test for this
+    3.times do |i|
+      rows << copyboard.shift(3)
+    end
+    rows.each do |row|
+      return "X" if row == Array.new(3, "X")
+      return "O" if row == Array.new(3, "O")
+    end
+    false
+  end
+
+  def length
+    @board.length
   end
 end
