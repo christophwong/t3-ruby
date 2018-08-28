@@ -5,7 +5,7 @@ Rake::TestTask.new do |t|
   t.pattern = "test/test_*.rb"
 end
 
-desc "start a new game of Tic Tac Toe"
+desc "starts a new game of Tic Tac Toe"
 task :start do
-  GameRunner.run
+  puts "To be implemented"
 end
