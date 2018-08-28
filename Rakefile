@@ -1,5 +1,4 @@
 require 'rake/testtask'
-require_relative 'lib/game_runner'
 
 Rake::TestTask.new do |t|
   t.pattern = "test/test_*.rb"
