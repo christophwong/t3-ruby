@@ -19,7 +19,7 @@ class TestGame < Minitest::Test
 
   def test_game_runs_displays_welcome
     @ui.expect(:give, nil, [/Welcome/])
-    Game.run(@ui)
+    @game.display_welcome(@ui)
     @ui.verify
   end
 
@@ -40,6 +40,8 @@ class TestGame < Minitest::Test
     @game.display_board(@ui)
     @ui.verify
   end
+
+
 =begin
 
   NOTES: these are what game_runner calls

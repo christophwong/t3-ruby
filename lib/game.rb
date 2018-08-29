@@ -5,6 +5,10 @@ class Game
     @board = Array.new(9)
   end
 
+  def display_welcome(ui)
+    ui.give("Welcome")
+  end
+
   def display_board(ui)
     ui.give(format_board(board))
   end
@@ -28,7 +32,4 @@ class Game
     full
   end
 
-  def self.run(ui)
-    ui.give("Welcome")
-  end
 end
