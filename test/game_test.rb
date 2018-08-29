@@ -7,12 +7,13 @@ class TestGame < Minitest::Test
   end
 
   def setup
-    @game = Game.new
+    @player = Minitest::Mock.new
+    @game = Game.new(@player)
     @ui = Minitest::Mock.new
   end
 
   def test_game_initializes_with_empty_board
-    game = Game.new
+    game = Game.new(@player)
     array_of_nine_empty_cells = Array.new(9)
     assert_equal array_of_nine_empty_cells, game.board
   end
@@ -39,6 +40,23 @@ class TestGame < Minitest::Test
     @ui.expect(:give, nil, [board_pattern])
     @game.display_board(@ui)
     @ui.verify
+  end
+
+  def test_human_turn_marks_human_player_move_on_board
+    chosen_index = 0
+    human_player = Minitest::Mock.new
+    human_player.expect(:get_chosen_index, chosen_index)
+
+    game = Game.new(human_player)
+    game.board = Array.new(9)
+    game.current_player = "X"
+
+    game.take_human_turn
+
+    human_player.verify
+
+    assert_equal "X", game.board[chosen_index]
+    assert_equal "O", game.current_player
   end
 
 

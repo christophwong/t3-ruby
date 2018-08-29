@@ -23,7 +23,7 @@ HUMAN TURN:
     Game asks HumanPlayer for move
         Human Player calculates move: (with empty cells on Board)
             - asks user for input
-            - verify [if the cell is empty]
+            ~ verify [if the cell is empty]
             - returns with index
             Game updates Board/state updates current player to computer
 

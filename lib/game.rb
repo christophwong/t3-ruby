@@ -1,8 +1,9 @@
 class Game
-  attr_accessor :board
+  attr_accessor :board, :current_player
 
-  def initialize
+  def initialize(player)
     @board = Array.new(9)
+    @human_player = player
   end
 
   def display_welcome(ui)
@@ -25,11 +26,17 @@ class Game
   end
 
   def over?
-    full = false
+    board_is_full = false
     board.each{|cell|
-      full = full || cell
+      board_is_full = board_is_full || cell
     }
-    full
+    !!board_is_full
+  end
+
+  def take_human_turn
+    chosen_index = @human_player.get_chosen_index
+    @board[chosen_index] = "X"
+    @current_player = "O"
   end
 
 end
