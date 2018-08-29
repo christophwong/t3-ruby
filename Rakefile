@@ -1,7 +1,7 @@
 require 'rake/testtask'
 
 Rake::TestTask.new do |t|
-  t.pattern = "test/test_*.rb"
+  t.pattern = "test/*_test.rb"
 end
 
 desc "starts a new game of Tic Tac Toe"

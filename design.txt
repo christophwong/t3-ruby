@@ -1,0 +1,59 @@
+#Design - flow of the game
+---------------------------------------------------
+This document contains notes for flushing out how the game runs.
+It is basically pseudocode to help me think about architecture.
+----------------------------------------------------
+
+def glossary
+    empty board --- Array.new(9) #=> [nil, nil, nil, nil, nil, nil, nil, nil, nil]
+    end state - [Human player wins,
+                    Computer wins,
+                        Board is full (Game is tied)]
+end
+
+{game begins}
+creates new Game (game has fresh state: empty board, players, UI)
+Game runs
+Game displays welcome message
+
+{game loop}
+Game displays Board
+
+HUMAN TURN:
+    Game asks HumanPlayer for move
+        Human Player calculates move: (with empty cells on Board)
+            - asks user for input
+            - verify [if the cell is empty]
+            - returns with index
+            Game updates Board/state updates current player to computer
+
+
+Game checks if end states:
+        - Game checks board for winner
+          checks row, checks column, checks diagonal
+if yes end game - break loop
+
+if no:
+-> computer turn
+COMPUTER TURN:
+    Game asks ComputerPlayer for move
+        ComputerPlayer calculates move: (with game current state/ board)
+            - take current board,
+             - for each possible move,
+              - generate next state
+               - check if end state (w/l/t) (represented as minmax points)
+               - if not end state; intermediate state
+                -> generate next states recursively
+                -> feed end points back up each level
+                -> deducts levels (depth)
+             rank moves and take Max
+             return index
+    Game updates Board
+    Game checks if end states
+{loop end}
+
+end game
+
+Game
+  - display winner
+  - display bye-byes or perhaps replay?
