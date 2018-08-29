@@ -1,19 +1,21 @@
 require 'minitest/autorun'
 require_relative '../lib/game.rb'
+require_relative './test_helpers.rb'
 
 class TestGame < Minitest::Test
   def make_full_board_with_mixed_marks
-    Array.new(9) { |i| i % 2 == 0 ? "X" : "O" }
+    TestHelpers.make_full_board_with_mixed_marks
   end
 
   def setup
     @player = Minitest::Mock.new
-    @game = Game.new(@player)
+    @computer_player = Minitest::Mock.new
+    @game = Game.new(@player, @computer_player)
     @ui = Minitest::Mock.new
   end
 
   def test_game_initializes_with_empty_board
-    game = Game.new(@player)
+    game = Game.new(@player, @computer_player)
     array_of_nine_empty_cells = Array.new(9)
     assert_equal array_of_nine_empty_cells, game.board
   end
@@ -47,7 +49,7 @@ class TestGame < Minitest::Test
     human_player = Minitest::Mock.new
     human_player.expect(:get_chosen_index, chosen_index)
 
-    game = Game.new(human_player)
+    game = Game.new(human_player, @computer_player)
     game.board = Array.new(9)
     game.current_player = "X"
 
@@ -59,15 +61,33 @@ class TestGame < Minitest::Test
     assert_equal "O", game.current_player
   end
 
+  def test_computer_turn_marks_computer_player_move_on_board
+    chosen_index = 0
+    computer_player = Minitest::Mock.new
+    computer_player.expect(:get_chosen_index, chosen_index)
+
+
+    game = Game.new(@player, computer_player)
+    game.board = Array.new(9)
+    game.current_player = "O"
+
+    game.take_computer_turn
+
+    computer_player.verify
+
+    assert_equal "O", game.board[chosen_index]
+    assert_equal "X", game.current_player
+  end
 
 =begin
 
   NOTES: these are what game_runner calls
    [X]game.display_welcome
-   [-]game.over?
+   [X]game.over?
    [X]game.display_board
-   [ ]game.take_human_turn
-   [ ]game.take_computer_turn
+   [-]game.take_human_turn {maybe add validation}
+   [-]game.take_computer_turn
+   [ ] game.over?
    [ ]game.end
 =end
 
