@@ -1,11 +1,18 @@
+require_relative './board.rb'
+
 class Game
-  attr_accessor :board, :current_player
+  attr_accessor :current_player
+  attr_reader :board
 
   def initialize(human_player, computer_player, ui = nil)
-    @board = Array.new(9)
+    @board = Board.new
     @human_player = human_player
     @computer_player = computer_player
     @ui = ui || UI.new
+  end
+
+  def set_board(state)
+    @board.state = state
   end
 
   def display_welcome
@@ -17,7 +24,7 @@ class Game
   end
 
   def format_board(board)
-    numbered_board = board.map.with_index{|cell, i|
+    numbered_board = board.state.map.with_index{|cell, i|
       if cell.nil?
         i + 1
       else
@@ -28,22 +35,18 @@ class Game
   end
 
   def over?
-
-    #over if it's in end state...board??
-    #these methods really shouldn't live in computer player
-    #need a Board class
-    !board.include?(nil)
+    board.in_end_state?
   end
 
   def take_human_turn
     chosen_index = @human_player.get_chosen_index
-    @board[chosen_index] = "X"
+    @board.update_with_index(chosen_index, "X")
     @current_player = "O"
   end
 
   def take_computer_turn
-    chosen_index = @computer_player.get_chosen_index(@board)
-    @board[chosen_index] = "O"
+    chosen_index = @computer_player.get_chosen_index(@board.state)
+    @board.update_with_index(chosen_index, "O")
     @current_player = "X"
   end
 

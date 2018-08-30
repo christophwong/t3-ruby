@@ -76,15 +76,15 @@ class TestComputerPlayer < Minitest::Test
 
   def test_fill_first_available_box
     board = [
-     "X", "X", nil,
-     nil, "O", "X",
-     "X", "X", "O"
-   ]
+      "X", "X", nil,
+      nil, "O", "X",
+      "X", "X", "O"
+    ]
 
-   next_board = board.dup
-   next_board[2] = "X"
+    next_board = board.dup
+    next_board[2] = "X"
 
-   result = @computer_player.fill_first_available_box(board, "X")
-   assert_equal next_board, result
- end
+    result = @computer_player.fill_first_available_box(board, "X")
+    assert_equal next_board, result
+  end
 end

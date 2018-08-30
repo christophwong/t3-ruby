@@ -5,16 +5,6 @@ class ComputerPlayer
 
   def get_chosen_index(board)
     available_spaces = get_available_spaces(board)
-
-    if available_spaces.one?
-      return available_spaces.first
-    end
-    # and return their end state ranking (10, 0, -10)
-    # if it's computer's turn, we want the index with ranking 10
-    # because that means computer is winning, yay AI overlords
-    # but 0 means no win or losses...
-    #
-
     ranks_and_i = ranks_and_index(available_spaces, board)
     select_index_from_rank_pair ranks_and_i.max
 
@@ -27,7 +17,6 @@ class ComputerPlayer
       next_board = board.dup
       next_board[i] = @mark
       rank = get_ranking(next_board, computer_players_turn)
-      # puts "ranks is : #{rank} and i #{i}"
       ranks << [rank, i]
     end
 
@@ -51,6 +40,7 @@ class ComputerPlayer
       computer_players_turn = !computer_players_turn
       mark = computer_players_turn ? "O" : "X"
       #question: filling first box seems wrong. Shall we fill with minmax strategy? Yes! i think so
+      # TODO: minmax strategy for next states
       next_board = fill_first_available_box(board, mark)
 
       return get_ranking(next_board, computer_players_turn, depth)

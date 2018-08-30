@@ -16,8 +16,8 @@ class TestGame < Minitest::Test
 
   def test_game_initializes_with_empty_board
     game = Game.new(@player, @computer_player)
-    array_of_nine_empty_cells = Array.new(9)
-    assert_equal array_of_nine_empty_cells, game.board
+
+    assert game.board.empty?
   end
 
   def test_game_runs_displays_welcome
@@ -27,29 +27,31 @@ class TestGame < Minitest::Test
   end
 
   def test_game_isnt_over_with_empty_board
-    @game.board = Array.new(9)
+    @game.set_board Array.new(9)
     refute @game.over?
   end
 
   def test_game_is_over_when_board_is_filled
-    @game.board = make_full_board_with_mixed_marks
+    @game.set_board make_full_board_with_mixed_marks
     assert @game.over?
   end
 
   def test_game_isnt_over_when_board_is_half_filled
-    @game.board = ["X", nil, nil, nil, nil, nil, "O", nil, nil]
+    @game.set_board ["X", nil, nil, nil, nil, nil, "O", nil, nil]
     refute @game.over?
   end
 
   def test_game_is_over_when_there_is_a_win
-    skip('todo build Board class for these')
-
-    @game.board = ["X", nil, nil, nil, nil, nil, "O", "O", "over"]
+    @game.set_board [
+      "X", nil, nil,
+      nil, nil, nil,
+      "O", "O", "O"
+    ]
     assert @game.over?
   end
 
   def test_game_displays_numbered_board
-    @game.board = Array.new(9)
+    @game.set_board Array.new(9)
     board_pattern = /(\d[\|\n]?){9}/
     @ui.expect(:give, nil, [board_pattern])
     @game.display_board
@@ -69,14 +71,14 @@ class TestGame < Minitest::Test
     human_player.expect(:get_chosen_index, chosen_index)
 
     game = Game.new(human_player, @computer_player)
-    game.board = Array.new(9)
+    game.set_board(Array.new(9))
     game.current_player = "X"
 
     game.take_human_turn
 
     human_player.verify
 
-    assert_equal "X", game.board[chosen_index]
+    assert_equal "X", game.board.get_cell(chosen_index)
     assert_equal "O", game.current_player
   end
 
@@ -88,14 +90,26 @@ class TestGame < Minitest::Test
 
 
     game = Game.new(@player, computer_player)
-    game.board = board
+    game.set_board board
     game.current_player = "O"
 
     game.take_computer_turn
 
     computer_player.verify
 
-    assert_equal "O", game.board[chosen_index]
+    assert_equal "O", game.board.get_cell(chosen_index)
     assert_equal "X", game.current_player
+  end
+
+  def test_update_to_game_board_updates_board_state
+    board = Array.new(9)
+    board[0] = "X"
+    @game.set_board board
+
+    assert_equal board, @game.board.state
+    board[1] = "O"
+    @game.set_board board
+
+    assert_equal board, @game.board.state
   end
 end
