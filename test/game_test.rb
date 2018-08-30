@@ -10,8 +10,8 @@ class TestGame < Minitest::Test
   def setup
     @player = Minitest::Mock.new
     @computer_player = Minitest::Mock.new
-    @game = Game.new(@player, @computer_player)
     @ui = Minitest::Mock.new
+    @game = Game.new(@player, @computer_player, @ui)
   end
 
   def test_game_initializes_with_empty_board
@@ -22,7 +22,7 @@ class TestGame < Minitest::Test
 
   def test_game_runs_displays_welcome
     @ui.expect(:give, nil, [/Welcome/])
-    @game.display_welcome(@ui)
+    @game.display_welcome
     @ui.verify
   end
 
@@ -40,7 +40,14 @@ class TestGame < Minitest::Test
     @game.board = Array.new(9)
     board_pattern = /(\d[\|\n]?){9}/
     @ui.expect(:give, nil, [board_pattern])
-    @game.display_board(@ui)
+    @game.display_board
+    @ui.verify
+  end
+
+  def test_game_ends
+    # @ui.expect(:give, nil, [/[Ww]inner is/])
+    @ui.expect(:give, nil, [/[Bb]ye/])
+    @game.end
     @ui.verify
   end
 
@@ -62,13 +69,14 @@ class TestGame < Minitest::Test
   end
 
   def test_computer_turn_marks_computer_player_move_on_board
+    board = Array.new(9)
     chosen_index = 0
     computer_player = Minitest::Mock.new
-    computer_player.expect(:get_chosen_index, chosen_index)
+    computer_player.expect(:get_chosen_index, chosen_index, [board])
 
 
     game = Game.new(@player, computer_player)
-    game.board = Array.new(9)
+    game.board = board
     game.current_player = "O"
 
     game.take_computer_turn
@@ -78,18 +86,4 @@ class TestGame < Minitest::Test
     assert_equal "O", game.board[chosen_index]
     assert_equal "X", game.current_player
   end
-
-=begin
-
-  NOTES: these are what game_runner calls
-   [X]game.display_welcome
-   [X]game.over?
-   [X]game.display_board
-   [-]game.take_human_turn {maybe add validation}
-   [-]game.take_computer_turn
-   [ ] game.over?
-   [ ]game.end
-=end
-
-
 end

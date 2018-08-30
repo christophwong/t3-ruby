@@ -1,18 +1,19 @@
 class Game
   attr_accessor :board, :current_player
 
-  def initialize(human_player, computer_player)
+  def initialize(human_player, computer_player, ui = nil)
     @board = Array.new(9)
     @human_player = human_player
     @computer_player = computer_player
+    @ui = ui || UI.new
   end
 
-  def display_welcome(ui)
-    ui.give("Welcome")
+  def display_welcome
+    @ui.give("Welcome")
   end
 
-  def display_board(ui)
-    ui.give(format_board(board))
+  def display_board
+    @ui.give(format_board(board))
   end
 
   def format_board(board)
@@ -41,9 +42,13 @@ class Game
   end
 
   def take_computer_turn
-    chosen_index = @computer_player.get_chosen_index
+    chosen_index = @computer_player.get_chosen_index(@board)
     @board[chosen_index] = "O"
     @current_player = "X"
+  end
+
+  def end
+    @ui.give("Bye bye")
   end
 
 end
