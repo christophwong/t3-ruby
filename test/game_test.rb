@@ -36,6 +36,18 @@ class TestGame < Minitest::Test
     assert @game.over?
   end
 
+  def test_game_isnt_over_when_board_is_half_filled
+    @game.board = ["X", nil, nil, nil, nil, nil, "O", nil, nil]
+    refute @game.over?
+  end
+
+  def test_game_is_over_when_there_is_a_win
+    skip('todo build Board class for these')
+
+    @game.board = ["X", nil, nil, nil, nil, nil, "O", "O", "over"]
+    assert @game.over?
+  end
+
   def test_game_displays_numbered_board
     @game.board = Array.new(9)
     board_pattern = /(\d[\|\n]?){9}/

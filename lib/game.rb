@@ -28,11 +28,11 @@ class Game
   end
 
   def over?
-    board_is_full = false
-    board.each{|cell|
-      board_is_full = board_is_full || cell
-    }
-    !!board_is_full
+
+    #over if it's in end state...board??
+    #these methods really shouldn't live in computer player
+    #need a Board class
+    !board.include?(nil)
   end
 
   def take_human_turn

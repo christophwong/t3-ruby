@@ -9,3 +9,6 @@ desc "starts a new game of Tic Tac Toe"
 task :start do
   GameRunner.new.start
 end
+
+task :t => :test
+task :s => :start
