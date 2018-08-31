@@ -1,14 +1,17 @@
 require_relative './board.rb'
+require_relative './ui.rb'
+require_relative './human_player.rb'
+require_relative './computer_player.rb'
 
 class Game
   attr_accessor :current_player
   attr_reader :board
 
-  def initialize(human_player, computer_player, ui = nil)
-    @board = Board.new
-    @human_player = human_player
-    @computer_player = computer_player
+  def initialize(human_player = nil, computer_player = nil, ui = nil, board = nil)
+    @board = board || Board.new
     @ui = ui || UI.new
+    @human_player = human_player || HumanPlayer.new(@ui)
+    @computer_player = computer_player || ComputerPlayer.new
   end
 
   def set_board(state)
@@ -45,13 +48,15 @@ class Game
   end
 
   def take_computer_turn
-    chosen_index = @computer_player.get_chosen_index(@board.state)
+    chosen_index = @computer_player.get_chosen_index(@board)
+
     @board.update_with_index(chosen_index, "O")
     @current_player = "X"
   end
 
   def end
-    @ui.give("Bye bye")
+    @ui.give("Winner is #{board.winner}")
+    display_board
   end
 
 end

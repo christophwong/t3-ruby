@@ -22,6 +22,15 @@ class Board
     @state[index] = mark
   end
 
+  def new_board_with_first_available_box_filled(mark)
+    i = get_available_spaces.first
+    new_board = Board.new
+    new_board.state = @state.dup
+    new_board.update_with_index(i, mark)
+
+    return new_board
+  end
+
   def get_cell(index)
     @state[index]
   end
@@ -35,14 +44,14 @@ class Board
   end
 
   def X_wins?
-    get_winner == "X"
+    winner == "X"
   end
 
   def O_wins?
-    get_winner == "O"
+    winner == "O"
   end
 
-  def get_winner
+  def winner
     check_combos(get_all_combos(@state))
   end
 

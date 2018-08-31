@@ -4,18 +4,20 @@ class ComputerPlayer
   end
 
   def get_chosen_index(board)
-    available_spaces = get_available_spaces(board)
-    ranks_and_i = ranks_and_index(available_spaces, board)
+    ranks_and_i = ranks_and_index(board)
     select_index_from_rank_pair ranks_and_i.max
 
   end
 
-  def ranks_and_index(available_spaces, board)
+  def ranks_and_index(board)
     ranks = []
+    available_spaces = board.get_available_spaces
     computer_players_turn = true
+
     available_spaces.each do |i|
       next_board = board.dup
-      next_board[i] = @mark
+      next_board.state = board.state.dup
+      next_board.update_with_index(i, @mark)
       rank = get_ranking(next_board, computer_players_turn)
       ranks << [rank, i]
     end
@@ -28,12 +30,12 @@ class ComputerPlayer
   end
 
   def get_ranking(board, computer_players_turn, depth = 0)
-  winner = get_winner(board)
+  winner = board.winner
     if winner == "O"
       return (10 - depth)
     elsif winner == "X"
       return (-10 + depth)
-    elsif no_more_available_move?(board)
+    elsif board.no_available_moves?
       return (0 - depth)
     else
       depth += 1
@@ -41,75 +43,8 @@ class ComputerPlayer
       mark = computer_players_turn ? "O" : "X"
       #question: filling first box seems wrong. Shall we fill with minmax strategy? Yes! i think so
       # TODO: minmax strategy for next states
-      next_board = fill_first_available_box(board, mark)
-
+      next_board = board.new_board_with_first_available_box_filled(mark)
       return get_ranking(next_board, computer_players_turn, depth)
     end
-  end
-
-  def fill_first_available_box(board, mark)
-    i = get_available_spaces(board).first
-    new_board = board.dup
-    new_board[i] = mark
-    new_board
-  end
-
-  def no_more_available_move?(board)
-    !board.include?(nil)
-  end
-
-  def get_available_spaces(board)
-    available_spaces = []
-    board.each_with_index do |cell, i|
-      if cell.nil?
-        available_spaces << i
-      end
-    end
-    available_spaces
-  end
-
-  def get_winner(board)
-    check_combos(get_all_combos(board))
-  end
-
-  def check_combos(combos)
-    return "X" if check_win_for(combos, "X")
-    return "O" if check_win_for(combos, "O")
-  end
-
-  def check_win_for(combos, mark)
-    combos.include?(Array.new(3, mark))
-  end
-
-  def get_all_combos(board)
-    rows = get_row(board)
-    columns = get_col(rows)
-    diagonals = get_diag(rows)
-    [*rows, *columns, *diagonals]
-  end
-
-  def get_diag(rows)
-    top_left_to_bottom_right = []
-    top_right_to_bottom_left = []
-
-    rows.each_with_index do |row, index|
-      top_left_to_bottom_right << row[index]
-      top_right_to_bottom_left << row[2 - index]
-    end
-
-    return [top_left_to_bottom_right, top_right_to_bottom_left]
-  end
-
-  def get_col(rows)
-    rows.transpose
-  end
-
-  def get_row(board)
-    rows = []
-    board = board.dup
-    3.times do |i|
-      rows << board.shift(3)
-    end
-    rows
   end
 end
