@@ -9,11 +9,11 @@ class TestGame < Minitest::Test
   end
 
   def setup
-    @player = Minitest::Mock.new
+    @human_player = Minitest::Mock.new
     @computer_player = Minitest::Mock.new
     @ui = Minitest::Mock.new
     @board = Minitest::Mock.new
-    @game = Game.new(@player, @computer_player, @ui)
+    @game = Game.new(@human_player, @computer_player, @ui)
   end
 
   def test_game_initializes_with_empty_board
@@ -61,15 +61,14 @@ class TestGame < Minitest::Test
 
   def test_human_turn_marks_human_player_move_on_board
     chosen_index = 0
-    human_player = Minitest::Mock.new
-    human_player.expect(:get_chosen_index, chosen_index)
+    @human_player.expect(:get_chosen_index, chosen_index)
     @board.expect(:update_with_index, nil, [chosen_index, "X"])
 
-    game = Game.new(human_player, @computer_player, @ui, @board)
+    game = Game.new(@human_player, @computer_player, @ui, @board)
     game.current_player = "X"
     game.take_human_turn
 
-    human_player.verify
+    @human_player.verify
     @board.verify
 
     assert_equal "O", game.current_player
@@ -116,6 +115,24 @@ class TestGame < Minitest::Test
     ]
     @game.set_board board
     @game.end
+    @ui.verify
+  end
+
+  def test_new_game_question_ask_user
+    @ui.expect(:give, nil, ['Play again? (T/F)'])
+    @ui.expect(:receive, "f")
+
+    assert_equal false, @game.new_game?
+    @ui.verify
+  end
+
+  def test_new_game_question_ask_user_again_if_answer_is_strange
+    @ui.expect(:give, nil, [/Play again?/])
+    @ui.expect(:receive, "jibberish")
+    @ui.expect(:give, nil, [/Play again?/])
+    @ui.expect(:receive, "T")
+
+    assert_equal true, @game.new_game?
     @ui.verify
   end
 end

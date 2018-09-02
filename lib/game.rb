@@ -60,4 +60,16 @@ class Game
     display_board
   end
 
+  def new_game?
+    @ui.give('Play again? (T/F)')
+    answer = @ui.receive
+    if answer =~ /^[Tt]$/
+      true
+    elsif answer =~ /^[Ff]$/
+      false
+    else
+      new_game?
+    end
+  end
+
 end

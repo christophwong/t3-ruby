@@ -18,5 +18,12 @@ class GameRunner
       @game.take_computer_turn
     end
     @game.end
+
+    if @game.new_game?
+      @game.reset_state!
+      @game.start
+    else
+      @game.display_good_bye
+    end
   end
 end
