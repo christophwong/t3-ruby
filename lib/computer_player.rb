@@ -31,13 +31,9 @@ class ComputerPlayer
   end
 
   def get_ranking(board, computer_players_turn, depth = 0)
-    # puts "get ranks"
-    # puts "depth: #{depth}"
-    # puts board.format_board
-    # puts "winner #{board.winner}"
-if depth > 11
-  throw Error
-end
+    if depth > 11
+      throw Error
+    end
   winner = board.winner
     if winner == "O"
       return (10 - depth)
@@ -48,7 +44,6 @@ end
     else
       depth += 1
       mark = computer_players_turn ? @mark : @human_mark
-      # TODO: minmax strategy for next states
       next_board = board.dup
       chosen_index = get_chosen_index(next_board, computer_players_turn)
       next_board.update_with_index(chosen_index, mark)
