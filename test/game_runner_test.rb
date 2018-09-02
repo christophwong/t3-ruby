@@ -14,6 +14,7 @@ class TestGameRunner < Minitest::Test
 
   def test_main_flow
     game_begins
+    game_is_not_over
     first_turn_loop
     game_is_not_over
     second_turn_loop
@@ -23,10 +24,15 @@ class TestGameRunner < Minitest::Test
 
   def test_repeat_game
     game_begins
+    game_is_not_over
     first_turn_loop
     game_over
+
     new_game
     repeat_game
+    game_begins
+
+    over_and_out
   end
 
   def game_turn_loop
@@ -37,7 +43,6 @@ class TestGameRunner < Minitest::Test
 
   def game_begins
     @game.expect(:display_welcome, nil)
-    @game.expect(:over?, false)
   end
 
   def first_turn_loop
@@ -64,7 +69,6 @@ class TestGameRunner < Minitest::Test
 
   def repeat_game
     @game.expect(:reset_board!, nil)
-    @game.expect(:start, nil)
   end
 
   def over_and_out

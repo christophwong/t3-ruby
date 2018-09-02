@@ -21,7 +21,7 @@ class GameRunner
 
     if @game.new_game?
       @game.reset_board!
-      @game.start
+      start
     else
       @game.display_good_bye
     end
