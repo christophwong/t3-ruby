@@ -4,6 +4,6 @@ class UI
   end
 
   def receive(io = $stdin)
-    io.gets
+    io.gets.chomp
   end
 end

@@ -14,10 +14,9 @@ class TestUI < Minitest::Test
 
   def test_ui_can_receive_user_input
     ui = UI.new
-    test_string = "Test String"
-    io = StringIO.new(test_string)
+    io = StringIO.new("Test String\n")
     result = ui.receive(io)
 
-    assert_equal test_string, result
+    assert_equal "Test String", result
   end
 end
