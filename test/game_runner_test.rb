@@ -63,7 +63,7 @@ class TestGameRunner < Minitest::Test
   end
 
   def repeat_game
-    @game.expect(:reset_state!, nil)
+    @game.expect(:reset_board!, nil)
     @game.expect(:start, nil)
   end
 

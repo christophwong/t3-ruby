@@ -135,4 +135,11 @@ class TestGame < Minitest::Test
     assert_equal true, @game.new_game?
     @ui.verify
   end
+
+  def test_reset_board
+    @game.set_board make_full_board_with_mixed_marks
+    @game.reset_board!
+
+    assert_equal Array.new(9), @game.board.state
+  end
 end

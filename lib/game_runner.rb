@@ -20,7 +20,7 @@ class GameRunner
     @game.end
 
     if @game.new_game?
-      @game.reset_state!
+      @game.reset_board!
       @game.start
     else
       @game.display_good_bye

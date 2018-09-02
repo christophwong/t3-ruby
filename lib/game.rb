@@ -72,4 +72,7 @@ class Game
     end
   end
 
+  def reset_board!
+    @board = Board.new
+  end
 end
