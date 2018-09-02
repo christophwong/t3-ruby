@@ -142,4 +142,10 @@ class TestGame < Minitest::Test
 
     assert_equal Array.new(9), @game.board.state
   end
+
+  def test_display_good_bye
+    @ui.expect(:give, nil, [/bye/])
+    @game.display_good_bye
+    @ui.verify
+  end
 end

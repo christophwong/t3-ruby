@@ -26,6 +26,10 @@ class Game
     @ui.give(format_board(board))
   end
 
+  def display_good_bye
+    @ui.give("Goodbye!!")
+  end
+
   def format_board(board)
     numbered_board = board.state.map.with_index{|cell, i|
       if cell.nil?
