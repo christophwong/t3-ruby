@@ -63,23 +63,34 @@ class TestGame < Minitest::Test
     chosen_index = 0
     human_player = Minitest::Mock.new
     human_player.expect(:get_chosen_index, chosen_index)
+    @board.expect(:update_with_index, nil, [chosen_index, "X"])
 
-    game = Game.new(human_player, @computer_player)
-    game.set_board(Array.new(9))
+    game = Game.new(human_player, @computer_player, @ui, @board)
     game.current_player = "X"
-
     game.take_human_turn
 
     human_player.verify
+    @board.verify
 
-    assert_equal "X", game.board.get_cell(chosen_index)
     assert_equal "O", game.current_player
   end
 
-  def test_computer_turn_markss_computer_player_move_on_board
-    game = Game.new()
+  def test_computer_turn_marks_computer_player_move_on_board
+    chosen_index = 0
+    computer_player = Minitest::Mock.new
+    computer_player.expect(:get_chosen_index, chosen_index, [@board, true])
+    @board.expect(:update_with_index, nil, [chosen_index, "O"])
+
+    game = Game.new(@human_player, computer_player,@ui, @board)
+    game.current_player = "O"
+
+
     game.take_computer_turn
-    assert_equal 1, game.board.state.count("O")
+
+    computer_player.verify
+    @board.verify
+
+    assert_equal "X", game.current_player
   end
 
   def test_update_to_game_board_updates_board_state

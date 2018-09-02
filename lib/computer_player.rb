@@ -1,24 +1,25 @@
 class ComputerPlayer
   def initialize
     @mark = "O"
+    @human_mark = "X"
   end
 
-  def get_chosen_index(board)
-    ranks_and_i = ranks_and_index(board)
-    select_index_from_rank_pair ranks_and_i.max
-
+  def get_chosen_index(board, computer_players_turn)
+    ranks_and_i = ranks_and_index(board, computer_players_turn)
+    min_or_max = computer_players_turn ? ranks_and_i.max : ranks_and_i.min
+    select_index_from_rank_pair min_or_max
   end
 
-  def ranks_and_index(board)
+  def ranks_and_index(board, computer_players_turn)
     ranks = []
     available_spaces = board.get_available_spaces
-    computer_players_turn = true
-
     available_spaces.each do |i|
       next_board = board.dup
       next_board.state = board.state.dup
-      next_board.update_with_index(i, @mark)
-      rank = get_ranking(next_board, computer_players_turn)
+      mark = computer_players_turn ? @mark : @human_mark
+
+      next_board.update_with_index(i, mark)
+      rank = get_ranking(next_board, !computer_players_turn)
       ranks << [rank, i]
     end
 
@@ -30,6 +31,13 @@ class ComputerPlayer
   end
 
   def get_ranking(board, computer_players_turn, depth = 0)
+    # puts "get ranks"
+    # puts "depth: #{depth}"
+    # puts board.format_board
+    # puts "winner #{board.winner}"
+if depth > 11
+  throw Error
+end
   winner = board.winner
     if winner == "O"
       return (10 - depth)
@@ -39,12 +47,12 @@ class ComputerPlayer
       return (0 - depth)
     else
       depth += 1
-      computer_players_turn = !computer_players_turn
-      mark = computer_players_turn ? "O" : "X"
-      #question: filling first box seems wrong. Shall we fill with minmax strategy? Yes! i think so
+      mark = computer_players_turn ? @mark : @human_mark
       # TODO: minmax strategy for next states
-      next_board = board.new_board_with_first_available_box_filled(mark)
-      return get_ranking(next_board, computer_players_turn, depth)
+      next_board = board.dup
+      chosen_index = get_chosen_index(next_board, computer_players_turn)
+      next_board.update_with_index(chosen_index, mark)
+      return get_ranking(next_board, !computer_players_turn, depth)
     end
   end
 end

@@ -8,6 +8,18 @@ class Board
     get_available_spaces.length == 9
   end
 
+  def format_board
+    numbered_board = @state.map.with_index{|cell, i|
+      if cell.nil?
+        i + 1
+      else
+        cell
+      end
+    }
+    "%s|%s|%s\n%s|%s|%s\n%s|%s|%s"%[*numbered_board]
+  end
+
+
   def get_available_spaces
     available_spaces = []
     @state.each_with_index do |cell, i|

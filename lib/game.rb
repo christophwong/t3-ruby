@@ -48,7 +48,8 @@ class Game
   end
 
   def take_computer_turn
-    chosen_index = @computer_player.get_chosen_index(@board)
+    computers_turn = true
+    chosen_index = @computer_player.get_chosen_index(@board, computers_turn)
 
     @board.update_with_index(chosen_index, "O")
     @current_player = "X"
