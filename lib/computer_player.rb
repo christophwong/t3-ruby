@@ -4,50 +4,40 @@ class ComputerPlayer
     @human_mark = "X"
   end
 
-  def get_chosen_index(board, computer_players_turn)
-    ranks_and_i = ranks_and_index(board, computer_players_turn)
-    min_or_max = computer_players_turn ? ranks_and_i.max : ranks_and_i.min
-    select_index_from_rank_pair min_or_max
-  end
-
-  def ranks_and_index(board, computer_players_turn)
-    ranks = []
+  def get_chosen_index(board)
     available_spaces = board.get_available_spaces
-    available_spaces.each do |i|
-      next_board = board.dup
-      next_board.state = board.state.dup
-      mark = computer_players_turn ? @mark : @human_mark
 
-      next_board.update_with_index(i, mark)
-      rank = get_ranking(next_board, !computer_players_turn)
-      ranks << [rank, i]
+    moves_with_scores = available_spaces.map do |idx|
+      new_board = board.dup
+      new_board.state = board.state.dup
+      new_board.update_with_index(idx, @mark)
+      score = get_ranking(new_board) || 0
+
+      [score, idx]
     end
-
-    ranks
+    moves_with_scores.max[1]
   end
 
-  def select_index_from_rank_pair(rank)
-    rank[1]
-  end
+  def minmax(board, computers_turn = true, depth = 0)
+    rank = get_ranking(board, depth)
+    mark = computers_turn ? @mark : @human_mark
 
-  def get_ranking(board, computer_players_turn, depth = 0)
-    if depth > 11
-      throw Error
-    end
-  winner = board.winner
-    if winner == "O"
-      return (10 - depth)
-    elsif winner == "X"
-      return (-10 + depth)
-    elsif board.no_available_moves?
-      return (0 - depth)
+    if rank
+      return rank
     else
-      depth += 1
-      mark = computer_players_turn ? @mark : @human_mark
-      next_board = board.dup
-      chosen_index = get_chosen_index(next_board, computer_players_turn)
-      next_board.update_with_index(chosen_index, mark)
-      return get_ranking(next_board, !computer_players_turn, depth)
+      board.get_available_spaces.map do |idx|
+        new_board = board.dup
+        new_board.state = board.state.dup
+        new_board.update_with_index(idx, mark)
+        minmax(new_board, !computers_turn, (depth + 1))
+      end.send(computers_turn ? :max : :min)
     end
+
+  end
+
+  def get_ranking(board, depth = 0)
+    return (10 - depth) if board.O_wins?
+    return (depth - 10) if board.X_wins?
+    return 0 if board.no_available_moves?
   end
 end
