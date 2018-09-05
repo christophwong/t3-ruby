@@ -4,18 +4,23 @@ class ComputerPlayer
     @human_mark = "X"
   end
 
-  def get_chosen_index(board)
+  def get_chosen_index(board, computers_turn)
     available_spaces = board.get_available_spaces
 
     moves_with_scores = available_spaces.map do |idx|
+      mark = computers_turn ? @mark : @human_mark
       new_board = board.dup
       new_board.state = board.state.dup
-      new_board.update_with_index(idx, @mark)
-      score = get_ranking(new_board) || 0
-
+      new_board.update_with_index(idx, mark)
+      score = minmax(new_board, !computers_turn)
       [score, idx]
     end
-    moves_with_scores.max[1]
+
+    if computers_turn
+      moves_with_scores.max[1]
+    else
+      moves_with_scores.min[1]
+    end
   end
 
   def minmax(board, computers_turn = true, depth = 0)
@@ -32,7 +37,6 @@ class ComputerPlayer
         minmax(new_board, !computers_turn, (depth + 1))
       end.send(computers_turn ? :max : :min)
     end
-
   end
 
   def get_ranking(board, depth = 0)

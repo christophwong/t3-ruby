@@ -10,17 +10,6 @@ class TestComputerPlayer < Minitest::Test
     @computers_turn = true
   end
 
-  def test_computer_player_gets_winning_index
-    @board.state = [
-      "O", nil, "O",
-      "X", nil, "X",
-      "X", "O", "X"
-    ]
-    idx = @computer_player.get_chosen_index(@board)
-
-    assert_equal 1, idx
-  end
-
   def test_computer_player_gets_ranking_nil_for_unfinished_boards
     ranking = @computer_player.get_ranking(@board)
     assert_nil ranking
@@ -107,5 +96,15 @@ class TestComputerPlayer < Minitest::Test
 
     rank = @computer_player.minmax(@board, !@computers_turn)
     assert_equal (-9), rank
+  end
+
+  def test_get_chosen_index_choose_winning_move
+    @board.state = [
+      "O", "O", "X",
+      nil, nil, nil,
+      nil, "O", "X",
+    ]
+    assert_equal 4, @computer_player.get_chosen_index(@board, @computers_turn)
+    assert_equal 5, @computer_player.get_chosen_index(@board, !@computers_turn)
   end
 end
