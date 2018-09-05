@@ -38,6 +38,7 @@ class TestGameRunner < Minitest::Test
   def game_turn_loop
     @game.expect(:display_board, nil)
     @game.expect(:take_human_turn, nil)
+    @game.expect(:over?, false)
     @game.expect(:take_computer_turn, nil)
   end
 

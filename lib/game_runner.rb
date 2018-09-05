@@ -15,7 +15,9 @@ class GameRunner
     until @game.over?
       @game.display_board
       @game.take_human_turn
-      @game.take_computer_turn
+      unless @game.over?
+        @game.take_computer_turn
+      end
     end
     @game.end
 
