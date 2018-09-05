@@ -118,7 +118,7 @@ class TestGame < Minitest::Test
     @ui.verify
   end
 
-    def test_end_show_tied_game_and_board
+  def test_end_show_tied_game_and_board
     @ui.expect(:give, nil, [/Tied Game!/])
     @ui.expect(:give, nil, [/^X\|O\|X\nO\|X\|O\nO\|X\|O$/])
 
