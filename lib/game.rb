@@ -60,7 +60,12 @@ class Game
   end
 
   def end
-    @ui.give("Winner is #{board.winner}")
+    if board.winner
+      @ui.give("Winner is #{board.winner}")
+    else
+      @ui.give("Tied Game!")
+    end
+
     display_board
   end
 
